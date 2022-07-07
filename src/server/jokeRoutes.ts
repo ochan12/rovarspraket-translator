@@ -43,13 +43,13 @@ const jokeRoutes: FastifyPluginCallback = (fastify, opts, done) => {
         categories:
           (req.query.categories?.split(",") as JokeConfig["categories"]) ??
           undefined,
-      }).then((res) => res.data);
+      });
       switch (req.params.translation) {
         case "rovarsprak":
-          res.send(translateToRovarspraket(joke.joke));
+          res.send(translateToRovarspraket(joke));
           break;
         default:
-          res.send(joke.joke);
+          res.send(joke);
           break;
       }
     }

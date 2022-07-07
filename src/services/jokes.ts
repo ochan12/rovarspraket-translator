@@ -19,11 +19,13 @@ export type JokeConfig = {
   type: "single" | "twopart";
 };
 
-type JokeResponseConfig = {
+type JokeResponseConfig = (
+  | { joke: string; type: "single" }
+  | { setup: string; delivery: string; type: "twopart" }
+) & {
   error: boolean;
   category: string;
-  type: string;
-  joke: string;
+
   flags: {
     nsfw: boolean;
     religious: boolean;
@@ -62,5 +64,13 @@ export async function jokeOfTheDay(jokeConfig: Partial<JokeConfig>) {
       return acc;
     }, {}),
   };
-  return jokeService.get<JokeResponseConfig>(buildJokeUrl(finalJokeConfig));
+  return jokeService
+    .get<JokeResponseConfig>(buildJokeUrl(finalJokeConfig))
+    .then((joke) => {
+      if (joke.data.type === "single") return joke.data.joke;
+      else {
+        const { setup, delivery } = joke.data;
+        return `- ${setup}\n- ${delivery}`;
+      }
+    });
 }

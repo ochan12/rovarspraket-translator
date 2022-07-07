@@ -49,6 +49,11 @@ const buildJokeUrl = (config: JokeConfig) => {
   return `${categories.join(",")}?${params.toString()}`;
 };
 
+/**
+ * Get a random joke from https://sv443.net/jokeapi/v2/
+ * @param jokeConfig Parameters to build the joke
+ * @returns A joke and some extra data
+ */
 export async function jokeOfTheDay(jokeConfig: Partial<JokeConfig>) {
   const finalJokeConfig = { ...defaultJokeConfiguration, ...jokeConfig };
   return jokeService.get<JokeResponseConfig>(buildJokeUrl(finalJokeConfig));

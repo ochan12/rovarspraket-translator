@@ -14,6 +14,7 @@ const jokeRoutes: FastifyPluginCallback = (fastify, opts, done) => {
         params: {
           translation: {
             type: "string",
+            enum: ["rovarsprak", "normal"],
           },
         },
         querystring: {

@@ -18,6 +18,12 @@ const translationRoutes: FastifyPluginCallback = (fastify, opts, done) => {
     "/:language",
     {
       schema: {
+        params: {
+          language: {
+            type: "string",
+            enum: ["normal", "rovarsprak"],
+          },
+        },
         body: {
           type: "object",
           properties: {

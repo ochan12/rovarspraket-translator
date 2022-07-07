@@ -55,6 +55,12 @@ const buildJokeUrl = (config: JokeConfig) => {
  * @returns A joke and some extra data
  */
 export async function jokeOfTheDay(jokeConfig: Partial<JokeConfig>) {
-  const finalJokeConfig = { ...defaultJokeConfiguration, ...jokeConfig };
+  const finalJokeConfig = {
+    ...defaultJokeConfiguration,
+    ...Object.entries(jokeConfig).reduce<{}>((acc, [key, value]) => {
+      if (!!value) acc = { ...acc, [key]: value };
+      return acc;
+    }, {}),
+  };
   return jokeService.get<JokeResponseConfig>(buildJokeUrl(finalJokeConfig));
 }

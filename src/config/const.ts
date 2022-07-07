@@ -1,1 +1,1 @@
-export const JOKE_URL =  "https://sv443.net/jokeapi/v2/";
+export const JOKE_URL =  "https://v2.jokeapi.dev/joke/";

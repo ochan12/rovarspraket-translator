@@ -1,4 +1,5 @@
 import { FastifyPluginCallback } from "fastify";
+import { TranslationLanguage } from "../config";
 import {
   translateToNormalText,
   translateToRovarspraket,
@@ -9,30 +10,11 @@ const translationRoutes: FastifyPluginCallback = (fastify, opts, done) => {
     Body: {
       text: string;
     };
-  }>(
-    "/normal",
-    {
-      schema: {
-        body: {
-          type: "object",
-          properties: {
-            text: {
-              type: "string",
-            },
-          },
-        },
-      },
-    },
-    (req) => {
-      return translateToNormalText(req.body.text);
-    }
-  );
-  fastify.post<{
-    Body: {
-      text: string;
+    Params: {
+      language: TranslationLanguage;
     };
   }>(
-    "/rovarsprak",
+    "/:language",
     {
       schema: {
         body: {
@@ -46,7 +28,12 @@ const translationRoutes: FastifyPluginCallback = (fastify, opts, done) => {
       },
     },
     (req) => {
-      return translateToRovarspraket(req.body.text);
+      switch (req.params.language) {
+        case "rovarsprak":
+          return translateToRovarspraket(req.body.text);
+        default:
+          return translateToNormalText(req.body.text);
+      }
     }
   );
   done();

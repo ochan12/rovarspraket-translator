@@ -9,6 +9,7 @@ const translationRoutes: FastifyPluginCallback = (fastify, opts, done) => {
   fastify.post<{
     Body: {
       text: string;
+      withHyphen?: boolean;
     };
     Params: {
       language: TranslationLanguage;
@@ -23,6 +24,9 @@ const translationRoutes: FastifyPluginCallback = (fastify, opts, done) => {
             text: {
               type: "string",
             },
+            withHyphen: {
+              type: "boolean",
+            },
           },
         },
       },
@@ -30,7 +34,7 @@ const translationRoutes: FastifyPluginCallback = (fastify, opts, done) => {
     (req) => {
       switch (req.params.language) {
         case "rovarsprak":
-          return translateToRovarspraket(req.body.text);
+          return translateToRovarspraket(req.body.text, req.body.withHyphen);
         default:
           return translateToNormalText(req.body.text);
       }
